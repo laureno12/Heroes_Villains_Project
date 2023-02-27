@@ -25,16 +25,23 @@ def supers_list(request):
         serializer.save()
         return Response(serializer.errors, status =status.HTTP_201_CREATED)
     
-@api_view(['GET'])
+@api_view(['GET', 'PUT'])
 def supers_detail(request, pk):
-    try:
-        super = Super.objects.get(pk=pk)
+
+    super = get_object_or_404(Super, pk=pk)
+    if request.method =='GET':
+        
         serializer = SuperSerializer(super);
         return Response(serializer.data)
-    except Super.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
-    print(pk)
-    return Response(pk)
+    elif request.method == 'PUT':
+        
+        serializer = SuperSerializer(car, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+    
+
 
 
 
