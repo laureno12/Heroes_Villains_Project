@@ -9,6 +9,12 @@ from .models import Super
 def supers_list(request):
     supers = Super.objects.all()
     serializer = SuperSerializer(supers, many=True)
+
+    type=request.queryparams.get("Hero")
+    if type:
+        queryset = queryset.filter(type=type)
+
+
     return Response(serializer.data)
 
 
