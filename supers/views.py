@@ -11,10 +11,17 @@ from .models import Super
 def supers_list(request):
     if request.method == 'GET':
         type=request.queryparams.get("Hero")
+        custom_response_dict = {
+            'hero' = ["Batman", "Superman"]
+            'villain' = ["Loki"]
+        }
         print(type)
         queryset = Super.objects.all()
         if type:
             queryset = supers.filter(type=type)
+        else:
+            return Response(custom_response_dict)
+
         
         serializer = SuperSerializer(supers, many=True)
         return Response (serializer.data)
